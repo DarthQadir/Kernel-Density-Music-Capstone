@@ -177,10 +177,41 @@ E_notes = {
 
 }
 
+def shift(seq, shift):
+    """
+    Helper function for mode_notes()
+    """
+    return seq[shift:] + seq[:shift]
+
+
+def mode_notes(mode,key):
+
+
+    
+    major = [0,2,4,5,7,9,11]
+    Dorian = [0,2,3,5,7,9,10]
+    Phrygian = [0,1,3,5,7,8,10]
+    Lydian = [0,2,4,6,7,9,11]
+    Mixolydian = [0,2,4,5,7,9,10]
+    Aeolian = [0,2,3,5,7,8,10]
+    Locrian = [0,1,3,5,6,8,10]
+
+    if mode == 'Ionian (Major Scale)':
+        chosen_mode = major
+    elif mode == 'Aeolian (Minor Scale)':
+        chosen_mode = aeolian
+    else:
+        chosen_mode = eval(mode)
+    
+    notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
+    shifted_notes = shift(notes,notes.index(key))
+    new_notes = [ shifted_notes[i] for i in chosen_mode]
+    
+    return new_notes
 
 
 
-def filter_notes(e_notes=e_notes,B_notes=B_notes,G_notes=G_notes,D_notes=D_notes,A_notes=A_notes,E_notes=E_notes,processed_notes):
+def filter_notes(e_notes,B_notes,G_notes,D_notes,A_notes,E_notes,processed_notes,new_notes):
     """
     Filter notes according to the specified key and mode by the user
     """

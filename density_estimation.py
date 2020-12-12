@@ -8,8 +8,9 @@ def density_estimate(notes,bandwidth=0.5,kernel='gaussian'):
     """
     Function that performs density estimation on a dataset
     """
-
+    
     #Label encoding to transform notes
+    global encoder
     encoder = LabelEncoder()
     transformed_notes = encoder.fit_transform(notes)
 
@@ -49,4 +50,4 @@ def generate_samples(model):
           elif note[0] < 0:
             note[0] = 0
           processed_notes.append(encoder.inverse_transform(note)[0])
-    return test_notes
+    return processed_notes

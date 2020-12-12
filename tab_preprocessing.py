@@ -35,15 +35,15 @@ def add_dash(string,longest_len):
     while len(string) < longest_len:
       string += '-'  
 
-def get_notes(tab,i,string_type):
+def get_notes(tab,i,string_type,tab_lengths,count):
     """
     Helper function for tab_to_list that appends the right notes from the string list to another list
     """
-  if eval('check_'+string_type) == False:
-    if tab[i] == string_type:
-      eval('string_'+string_type).append(tab[i+2:i+2+tab_lengths[count]])
-      temp = eval('check_'+string_type)
-      temp = True
+    if eval('check_'+string_type) == False:
+        if tab[i] == string_type:
+          eval('string_'+string_type).append(tab[i+2:i+2+tab_lengths[count]])
+          temp = eval('check_'+string_type)
+          temp = True
 
 
 
@@ -54,7 +54,6 @@ def tab_to_list(tabs,tab_lengths):
     Returns each string's notes in a list
     """
     #Arrays to hold each string's notes
-    
     global string_e,string_B,string_G,string_D,string_A,string_E
     string_e = []
     string_B = []
@@ -72,6 +71,7 @@ def tab_to_list(tabs,tab_lengths):
     for tab in tabs:
 
       #Checks for optimization purposes
+      global check_e,check_B,check_G,check_D,check_A,check_E
       check_e = False
       check_B = False
       check_G = False
@@ -80,14 +80,14 @@ def tab_to_list(tabs,tab_lengths):
       check_E = False
       
       for i in range(len(tab)):   
-        get_notes(tab,i,'e')
-        get_notes(tab,i,'B')
-        get_notes(tab,i,'G')
-        get_notes(tab,i,'D')
-        get_notes(tab,i,'A')
-        get_notes(tab,i,'E')
+        get_notes(tab,i,'e',tab_lengths,count)
+        get_notes(tab,i,'B',tab_lengths,count)
+        get_notes(tab,i,'G',tab_lengths,count)
+        get_notes(tab,i,'D',tab_lengths,count)
+        get_notes(tab,i,'A',tab_lengths,count)
+        get_notes(tab,i,'E',tab_lengths,count)
 
-      count+=1
+    count+=1
 
 
     #Now we have the tabs in a prettier format
@@ -100,7 +100,6 @@ def tab_to_list(tabs,tab_lengths):
 
 
     #Make each string of a consistent length
-    global longest_len
     longest_len = max(len(string_e),len(string_B),len(string_G),len(string_D),len(string_A),len(string_E))
 
 
@@ -119,42 +118,42 @@ def tab_to_list(tabs,tab_lengths):
  
  
  
- def twelve_note(i):
-  """
-  Helper function for vertical_slice. It appends two vertical slices of our tab
-  """
-  notes.append(string_e[i])
-  notes.append(string_B[i])
-  notes.append(string_G[i])
-  notes.append(string_D[i])
-  notes.append(string_A[i])
-  notes.append(string_E[i])
-  notes.append(string_e[i+1])
-  notes.append(string_B[i+1])
-  notes.append(string_G[i+1])
-  notes.append(string_D[i+1])
-  notes.append(string_A[i+1])
-  notes.append(string_E[i+1])
-  final_notes.append(notes)
+def twelve_note(i):
+    """
+    Helper function for vertical_slice. It appends two vertical slices of our tab
+    """
+    notes.append(string_e[i])
+    notes.append(string_B[i])
+    notes.append(string_G[i])
+    notes.append(string_D[i])
+    notes.append(string_A[i])
+    notes.append(string_E[i])
+    notes.append(string_e[i+1])
+    notes.append(string_B[i+1])
+    notes.append(string_G[i+1])
+    notes.append(string_D[i+1])
+    notes.append(string_A[i+1])
+    notes.append(string_E[i+1])
+    final_notes.append(notes)
 
 def six_note(i):
-  """
-  Helper function for vertical_slice. It appends one vertical slice of our tab
-  """
-  notes.append(string_e[i])
-  notes.append(string_B[i])
-  notes.append(string_G[i])
-  notes.append(string_D[i])
-  notes.append(string_A[i])
-  notes.append(string_E[i])
-  final_notes.append(notes)
+    """
+    Helper function for vertical_slice. It appends one vertical slice of our tab
+    """
+    notes.append(string_e[i])
+    notes.append(string_B[i])
+    notes.append(string_G[i])
+    notes.append(string_D[i])
+    notes.append(string_A[i])
+    notes.append(string_E[i])
+    final_notes.append(notes)
 
 
-def note_check(string,i):
-  """
-  Helper function for vertical_slice. It checks whether we have a 2 digit or 1 digit note
-  """
-  if string[i].isdigit() == True:
+def note_check(string,i,longest_len):
+    """
+    Helper function for vertical_slice. It checks whether we have a 2 digit or 1 digit note
+    """
+    if string[i].isdigit() == True:
         if i != longest_len-1:
           if string[i+1].isdigit() == True:
             return 2
@@ -164,13 +163,13 @@ def note_check(string,i):
  
  
 
-def vertical_slice():
+def vertical_slice(string_e,string_B,string_G,string_D,string_A,string_E,longest_len):
     """
     This cell basically takes a vertical slice of the tablature to get a single note/chord and it appends that note/chord into a list
     Only reason I have more 'repetitive' code is because I need the flag to check for double digit notes,
     and that uses the continue function
     """
-
+    global final_notes,notes
     final_notes = []
     flag=True
     for i in range(longest_len):
@@ -178,52 +177,52 @@ def vertical_slice():
             flag = True
             continue
         notes = []
-        if note_check(string_e,i) == 2:
+        if note_check(string_e,i,longest_len) == 2:
             twelve_note(i)
             flag = False
             continue
-        elif note_check(string_e,i) == 1:
+        elif note_check(string_e,i,longest_len) == 1:
             six_note(i)
-
-        if note_check(string_B,i) == 2:
+            continue
+        if note_check(string_B,i,longest_len) == 2:
             twelve_note(i)
             flag = False
             continue
-        elif note_check(string_B,i) == 1:
+        elif note_check(string_B,i,longest_len) == 1:
             six_note(i)
-
-        if note_check(string_G,i) == 2:
+            continue
+        if note_check(string_G,i,longest_len) == 2:
             twelve_note(i)
             flag = False
             continue
-        elif note_check(string_G,i) == 1:
+        elif note_check(string_G,i,longest_len) == 1:
             six_note(i)
-
-        if note_check(string_D,i) == 2:
+            continue
+        if note_check(string_D,i,longest_len) == 2:
             twelve_note(i)
             flag = False
             continue
-        elif note_check(string_D,i) == 1:
+        elif note_check(string_D,i,longest_len) == 1:
             six_note(i)
-
-        if note_check(string_A,i) == 2:
+            continue
+        if note_check(string_A,i,longest_len) == 2:
             twelve_note(i)
             flag = False
             continue
-        elif note_check(string_A,i) == 1:
+        elif note_check(string_A,i,longest_len) == 1:
             six_note(i)
-
-        if note_check(string_E,i) == 2:
+            continue
+        if note_check(string_E,i,longest_len) == 2:
             twelve_note(i)
             flag = False
             continue
-        elif note_check(string_E,i) == 1:
+        elif note_check(string_E,i,longest_len) == 1:
             six_note(i)
- 
+            continue
     return final_notes
  
  
- def remove_wrong_notes(final_notes):
+def remove_wrong_notes(final_notes):
     """
     Function that processes final notes to get rid of wrongly processed notes. For example,
     consecutive 5's can be read as 55, but the guitar only has 24 frets.

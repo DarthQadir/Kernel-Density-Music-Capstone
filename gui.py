@@ -1,16 +1,28 @@
 import tkinter as tk
 import tkinter.font as tkFont
+import density_estimation
+import tab_preprocessing
+import music_theory
+
 from tkinter import ttk
 
 
 #Create the Tkinter window and subwindows that will be used
 window = tk.Tk()
 window.title("Input Tablature")
+
 popup_moretab = tk.Toplevel()
 popup_mode = tk.Toplevel()
+popup_print = tk.Toplevel()
+
 
 popup_moretab.withdraw()
 popup_mode.withdraw()
+popup_print.withdraw()
+
+popup_print.title('Outputted Guitar Tabs')
+
+
 
 
 
@@ -30,7 +42,7 @@ input_box.grid(row=1,column=0,pady=10)
 input_box.insert(tk.END,'Enter guitar tab here......') 
 
 
-#Code that clears the input guitar tab part
+#Code that clears the input guitar tab text
 def clear_textbox(event):
     if input_box.get('1.0',tk.END) == 'Enter guitar tab here......\n':
         input_box.delete('1.0', tk.END)
@@ -59,6 +71,11 @@ def clear_next_tab(event):
 
 
 def ask_tab(event):
+    
+    #Write tabs to text file
+    with open('tabs.txt', 'a') as tab_text:
+        tab_text.write(input_box.get('1.0',tk.END))
+        
     popup_moretab.deiconify()
     window.withdraw()
     popup_moretab.title('Input more tabs?')
@@ -88,6 +105,7 @@ def mode_choose(event):
     mode_label=tk.Label(master=popup_mode,text='Choose Mode')
     mode_label.grid(row=0,column=1)
     
+    global textvar_key, textvar_mode
     textvar_key = tk.StringVar()
     textvar_mode = tk.StringVar()
     keys = ttk.Combobox(master=popup_mode, textvariable = textvar_key)
@@ -108,7 +126,33 @@ def mode_choose(event):
     
     
 def machine_learning(event):
-    window.quit()
+    popup_mode.withdraw()
+    window.withdraw()
+    with open('tabs.txt','r') as read_tabs:
+        tabs = read_tabs.readlines()
+        tabs = [''.join(tabs[i:i+6]).replace('\n',' ') for i in range(0,len(tabs),6)]
+    
+    tab_lengths = tab_preprocessing.length_check(tabs)
+    tab_list = tab_preprocessing.tab_to_list(tabs,tab_lengths)
+    final_notes = tab_preprocessing.vertical_slice(tab_list[0],tab_list[1],tab_list[2],tab_list[3],tab_list[4],tab_list[5],tab_list[6])
+    final_notes = tab_preprocessing.remove_wrong_notes(final_notes)
+    
+    model = density_estimation.density_estimate(final_notes)
+    samples = density_estimation.generate_samples(model)
+    new_notes = music_theory.mode_notes(textvar_mode.get(),textvar_key.get())
+    processed_samples = music_theory.filter_notes(music_theory.e_notes,music_theory.B_notes,
+                                            music_theory.G_notes,music_theory.D_notes,
+                                            music_theory.A_notes,music_theory.E_notes,samples,new_notes)
+    
+    print_notes = music_theory.print_notes(processed_samples)
+    popup_print.deiconify()
+    print_box = tk.Text(master=popup_print,height=8,width=100)
+    print_box.pack()
+    print_box.insert(tk.END,print_notes[0]+'\n'+print_notes[1]+'\n'+print_notes[2]+'\n'+
+                        print_notes[3]+'\n'+print_notes[4]+'\n'+print_notes[5])
+ 
+ 
+
     
     
 
