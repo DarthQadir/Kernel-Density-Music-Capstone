@@ -145,17 +145,19 @@ def machine_learning(event):
                                             music_theory.A_notes,music_theory.E_notes,samples,new_notes)
     
     print_notes = music_theory.print_notes(processed_samples)
+    
+    #Limit number of notes printed to fit in GUI
+    print_notes = [print_notes[i][0:150] for i in range(len(print_notes)) ]
+    
     popup_print.deiconify()
     print_box = tk.Text(master=popup_print,height=8,width=150)
     print_box.pack()
     print_box.insert(tk.END,print_notes[0]+'\n'+print_notes[1]+'\n'+print_notes[2]+'\n'+
                         print_notes[3]+'\n'+print_notes[4]+'\n'+print_notes[5])
+    
+    #Delete contents of text file
+    open('tabs.txt', 'w').close()
  
  
-
-    
-    
-
-
 
 window.mainloop()

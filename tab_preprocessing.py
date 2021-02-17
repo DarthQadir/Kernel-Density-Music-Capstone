@@ -87,16 +87,18 @@ def tab_to_list(tabs,tab_lengths):
         get_notes(tab,i,'A',tab_lengths,count)
         get_notes(tab,i,'E',tab_lengths,count)
 
-    count+=1
+      count+=1
 
-
+    
     #Now we have the tabs in a prettier format
+
     string_e = ''.join(string_e)
     string_B = ''.join(string_B)
     string_G = ''.join(string_G)
     string_D = ''.join(string_D)
     string_A = ''.join(string_A)
     string_E = ''.join(string_E)
+
 
 
     #Make each string of a consistent length
