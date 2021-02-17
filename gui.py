@@ -146,7 +146,7 @@ def machine_learning(event):
     
     print_notes = music_theory.print_notes(processed_samples)
     popup_print.deiconify()
-    print_box = tk.Text(master=popup_print,height=8,width=100)
+    print_box = tk.Text(master=popup_print,height=8,width=150)
     print_box.pack()
     print_box.insert(tk.END,print_notes[0]+'\n'+print_notes[1]+'\n'+print_notes[2]+'\n'+
                         print_notes[3]+'\n'+print_notes[4]+'\n'+print_notes[5])
