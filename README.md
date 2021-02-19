@@ -18,9 +18,8 @@ How to run the program:
 
 Things left to do:
 
-1. Make the project more object oriented
-2. Fix program for various scenarios such as wrong user input, a modified text file etc.
-3. Change the probability of sampling the root note of a key (it should be higher, I will set a parameter for that).
+1. Make it more likely that the root note is sampled i.e. if a user chooses F as a keyn then the F note should be more likely to be sampled.
+2. Fix program for various scenarios/bugs such as wrong user input, a modified text file etc.
 
 
 
