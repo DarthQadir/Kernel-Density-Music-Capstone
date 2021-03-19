@@ -186,8 +186,12 @@ def shift(seq, shift):
 
 def mode_notes(mode,key):
 
+    """
+    Function that holds the notes for each different key and mode_notes
+    The filter_notes function uses the notes provided by this function to filter
+    by
+    """
 
-    
     major = [0,2,4,5,7,9,11]
     Dorian = [0,2,3,5,7,9,10]
     Phrygian = [0,1,3,5,7,8,10]
@@ -202,11 +206,11 @@ def mode_notes(mode,key):
         chosen_mode = aeolian
     else:
         chosen_mode = eval(mode)
-    
+
     notes = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']
     shifted_notes = shift(notes,notes.index(key))
     new_notes = [ shifted_notes[i] for i in chosen_mode]
-    
+
     return new_notes
 
 
@@ -215,7 +219,7 @@ def filter_notes(e_notes,B_notes,G_notes,D_notes,A_notes,E_notes,processed_notes
     """
     Filter notes according to the specified key and mode by the user
     """
-        
+
     string_notes = [e_notes,B_notes,G_notes,D_notes,A_notes,E_notes]
     filtered_notes = []
 
@@ -246,7 +250,7 @@ def filter_notes(e_notes,B_notes,G_notes,D_notes,A_notes,E_notes,processed_notes
             elif temp_note[0:2] in new_notes:
               filtered_notes.append(note)
             break
-    
+
     return filtered_notes
 
 
@@ -295,4 +299,3 @@ def print_notes(filtered_notes):
         print_E.append('-')
 
     return(''.join(print_e), ''.join(print_B), ''.join(print_G),''.join(print_D),''.join(print_A),''.join(print_E))
-
