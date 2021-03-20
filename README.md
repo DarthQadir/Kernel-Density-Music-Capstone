@@ -18,8 +18,7 @@ How to run the program:
 
 Things left to do:
 
-1. Make it more likely that the root note is sampled i.e. if a user chooses F as a keyn then the F note should be more likely to be sampled.
-2. Fix program for various scenarios/bugs such as wrong user input, a modified text file etc.
+1. Make it more likely that the root note is sampled i.e. if a user chooses F as a key then the F note should be more likely to be sampled.
 
 
 
