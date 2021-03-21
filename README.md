@@ -16,10 +16,5 @@ How to run the program:
 7. Get new tablatures as output!
 
 
-Things left to do:
-
-1. Make it more likely that the root note is sampled i.e. if a user chooses F as a key then the F note should be more likely to be sampled.
-
-
 
 
